@@ -15,8 +15,8 @@ const sess = {
 }
 const sessions = {}
 
-if (app.get('env') === 'production') {
-    app.set('trust proxy', 1) // trust first proxy
+if (app.get("env") === "production") {
+    app.set("trust proxy", 1) // trust first proxy
     sess.cookie.secure = true // serve secure cookies, could be set to "auto"
 }
 app.use(session(sess))
@@ -32,23 +32,36 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.get("/", (request, response) => {
     if (sessions[request.session.id]) {
-        response.send(fs.readFileSync("index.html", "utf-8"))
+        response.send(fs.readFileSync("webapp/index.html", "utf-8"))
     } else {
-        response.send(fs.readFileSync("login.html", "utf-8"))
+        response.redirect("/login")
     }
-
-    console.log(`request.session.id = ${request.session.id}`)
 })
 
-app.post("/", (request, response) => {
+app.get("/login", (request, response) => {
+    if (sessions[request.session.id]) {
+        response.redirect("/")
+    } else {
+        response.send(fs.readFileSync("server/login.html", "utf-8"))
+    }
+})
+
+app.post("/login", (request, response) => {
     const hash = crypto.createHash("sha256")
     hash.update(request.body.password + config.salt, "utf-8")
     if (validator.isUser(request.body.userid, hash.digest("base64"))) {
-        sessions[request.session.id] = true
-        response.send(fs.readFileSync("index.html", "utf-8"))
+        if (!sessions[request.session.id]) {
+            sessions[request.session.id] = {date: (new Date()).toISOString()}
+        }
+        response.redirect("/")
     } else {
-        response.send(fs.readFileSync("failure.html", "utf-8"))
+        response.redirect("/login")
     }
+})
+
+app.get("/logout", (request, response) => {
+    delete sessions[request.session.id]
+    response.redirect("/")
 })
 
 app.listen(port, () => {

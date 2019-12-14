@@ -1,6 +1,5 @@
 "use strict"
 
-const fs = require("fs")
 const crypto = require("crypto")
 const express = require("express")
 const bodyParser = require("body-parser")
@@ -32,9 +31,39 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.get("/", (request, response) => {
     if (sessions[request.session.id]) {
-        response.send(fs.readFileSync("webapp/index.html", "utf-8"))
+        response.sendFile(__dirname + "/dist/index.html")
     } else {
         response.redirect("/login")
+    }
+})
+
+app.get("/js/:file", (request, response) => {
+    if (sessions[request.session.id]) {
+        response.header("Content-Type", "text/javascript")
+        response.sendFile(__dirname + "/dist/js/" + request.params.file)
+    } else {
+        response.status(403)
+        response.send()
+    }
+})
+
+app.get("/css/:file", (request, response) => {
+    if (sessions[request.session.id]) {
+        response.header("Content-Type", "text/css")
+        response.sendFile(__dirname + "/dist/css/" + request.params.file)
+    } else {
+        response.status(403)
+        response.send()
+    }
+})
+
+app.get("/img/:file", (request, response) => {
+    if (sessions[request.session.id]) {
+        response.header("Content-Type", "image/png")
+        response.sendFile(__dirname + "/dist/img/" + request.params.file)
+    } else {
+        response.status(403)
+        response.send()
     }
 })
 
@@ -42,7 +71,7 @@ app.get("/login", (request, response) => {
     if (sessions[request.session.id]) {
         response.redirect("/")
     } else {
-        response.send(fs.readFileSync("server/login.html", "utf-8"))
+        response.sendFile(__dirname + "/login.html")
     }
 })
 

@@ -1,11 +1,16 @@
 <template>
   <div class="endpointinput">
-    <h1>End Point Input</h1>
+    <v-text-field v-model="url" label="url"></v-text-field>
   </div>
 </template>
 <script>
     export default {
-        name: "EndPointInput"
+        name: "EndPointInput",
+        data: function () {
+            return {
+                url: ""
+            }
+        }
     }
 </script>
 <style></style>

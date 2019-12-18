@@ -1,7 +1,7 @@
 <template>
-  <div class="endpointdescription">
-    <h1>End Point Description</h1>
-  </div>
+  <v-form>
+    TODO
+  </v-form>
 </template>
 <script>
     export default {

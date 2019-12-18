@@ -5,7 +5,7 @@
   "main": "server/app.js",
   "scripts": {
     "start": "node server/app.js",
-    "build": "vue build webapp/src/main.js --dest server/dist",
+    "build": "vue build webapp/src/main.js --dest server/distw",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "geocolumbus@gmail.com",

@@ -1,9 +1,25 @@
 <template>
-  <div id="app">
-    <EndPointInput></EndPointInput>
-    <EndPointList></EndPointList>
-    <EndPointDescription></EndPointDescription>
-  </div>
+  <v-app>
+    <v-container fluid>
+      <v-row>
+        <v-col><h1>URL Administration</h1></v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <EndPointInput></EndPointInput>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col md="4">
+          <EndPointList></EndPointList>
+        </v-col>
+        <v-col>
+          <EndPointDescription></EndPointDescription>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-footer>(c) 2019</v-footer>
+  </v-app>
 </template>
 
 <script>

@@ -6,15 +6,15 @@
       </v-row>
       <v-row>
         <v-col>
-          <EndPointInput></EndPointInput>
+          <EndPointInput v-on:addUrl="addUrl"></EndPointInput>
         </v-col>
       </v-row>
       <v-row>
         <v-col md="4">
-          <EndPointList></EndPointList>
+          <EndPointList :urls="urls"></EndPointList>
         </v-col>
         <v-col>
-          <EndPointDescription></EndPointDescription>
+          <EndPointDescription :url="urls[0]"></EndPointDescription>
         </v-col>
       </v-row>
     </v-container>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import EndPointInput from "./components/EndPointInput.vue"
     import EndPointList from "./components/EndPointList.vue"
     import EndPointDescription from "./components/EndPointDescription.vue"
@@ -33,6 +34,27 @@
             EndPointInput,
             EndPointList,
             EndPointDescription
+        },
+        data: function () {
+            return {
+                urls: ["testing"]
+            }
+        },
+        methods: {
+            addUrl: function (url) {
+                const context = this
+                Vue.axios(
+                    "http://localhost:8000/urlMetadata", {
+                        method: "GET",
+                        params: {url: url},
+                        headers: new Headers({
+                            "Accept": "application/json"
+                        })
+                    }
+                ).then(function (response) {
+                        context.urls.push(response.data)
+                    })
+            }
         }
     }
 </script>

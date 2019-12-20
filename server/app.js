@@ -37,6 +37,16 @@ app.get("/", (request, response) => {
     }
 })
 
+app.get("/urlMetadata", (request, response) => {
+    console.log(`request.session.id = ${request.session.id},  request.params.url=${request.query.url}`)
+    if (sessions[request.session.id]) {
+        response.send({url: request.query.url, "title": "test"})
+    } else {
+        response.status(403)
+        response.send()
+    }
+})
+
 app.get("/js/:file", (request, response) => {
     if (sessions[request.session.id]) {
         response.header("Content-Type", "text/javascript")

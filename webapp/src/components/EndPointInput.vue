@@ -21,6 +21,7 @@
         },
         methods: {
             submit: function () {
+                this.$emit("addUrl", this.url)
             }
         }
     }
